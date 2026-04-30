@@ -1,0 +1,1477 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Notificações-api-grupo8
+meta:
+  id: wrk_7abd60f6924742bbaec4f939a8c93606
+  created: 1774360833046
+  modified: 1774360833046
+  description: ""
+collection:
+  - url: http://localhost:3000/eventos/2
+    name: DELETE EVENTOS
+    meta:
+      id: req_9131591baaa64e2dab245aab7c0d47b5
+      created: 1777568146660
+      modified: 1777568183146
+      isPrivate: false
+      description: ""
+      sortKey: -1777568146660
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.5.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - name: EVENTO
+    meta:
+      id: fld_1ed2f87d2a464ead82d2d91c3466019f
+      created: 1774543611516
+      modified: 1774543611516
+      sortKey: -1774543611516
+      description: ""
+    children:
+      - url: http://localhost:3000/eventos
+        name: GET - Todos os eventos
+        meta:
+          id: req_dd7d5ee0c6cb4190a3a3301ce23e3436
+          created: 1774360838265
+          modified: 1774543632567
+          isPrivate: false
+          description: ""
+          sortKey: -1774543626106
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: POST - Novo evento
+        meta:
+          id: req_75a7f38368f943bfb9fbe0bbfa71850c
+          created: 1774540875642
+          modified: 1774548149934
+          isPrivate: false
+          description: ""
+          sortKey: -1774543626156
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Festa no SENAI",
+              "descricao": "Festa de encerramento",
+              "data": "2026-12-20",
+            	"local": "SENAI PRUDENTE",
+            	"capacidade": "3000"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/4
+        name: GET - Evento inexistente
+        meta:
+          id: req_69d40e61363740b0ab0e6e8e32ed7df2
+          created: 1774540887813
+          modified: 1774543629515
+          isPrivate: false
+          description: ""
+          sortKey: -1774543626056
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/3
+        name: PUT - Atualizar evento
+        meta:
+          id: req_e116481b43bd41aab19a668d25ecf247
+          created: 1774547938913
+          modified: 1774548194604
+          isPrivate: false
+          description: ""
+          sortKey: -1774543626256
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Festa no SENAI",
+              "descricao": "Festa de encerramento",
+              "data": "2026-12-20",
+            	"local": "SENAI PRUDENTE",
+            	"capacidade": "3000"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/3
+        name: DELETE - Deletar
+        meta:
+          id: req_a0339300b8834e1eba924795d1e4e407
+          created: 1774548155161
+          modified: 1774548196856
+          isPrivate: false
+          description: ""
+          sortKey: -1774543626356
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: INSCRIÇÕES
+    meta:
+      id: fld_de677bea89904f2594ba5109a81ae823
+      created: 1774543641605
+      modified: 1774543641605
+      sortKey: -1774543641605
+      description: ""
+    children:
+      - url: http://localhost:3000/inscricoes
+        name: GET - Todas as inscrições
+        meta:
+          id: req_449023cbbf9c412c9d864f86c9c5a23d
+          created: 1774543614323
+          modified: 1774545428746
+          isPrivate: false
+          description: ""
+          sortKey: -1774545421624
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes/evento/1
+        name: GET - Buscar por ID do evento
+        meta:
+          id: req_fe965ff50c50497584352363d353d3ab
+          created: 1774543908069
+          modified: 1774545421245
+          isPrivate: false
+          description: ""
+          sortKey: -1774545421224
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes/1/detalhes
+        name: GET - Buscar detalhes
+        meta:
+          id: req_24e7229be7664d75bdf0941a247d0892
+          created: 1774544052798
+          modified: 1774545422466
+          isPrivate: false
+          description: ""
+          sortKey: -1774545421324
+        method: GET
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes
+        name: POST - Criar inscrição
+        meta:
+          id: req_f7c4c45d1d2f468b807059cb84d739e8
+          created: 1774544662512
+          modified: 1775559605960
+          isPrivate: false
+          description: ""
+          sortKey: -1774545421424
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"eventoId": 2,
+            	"participanteId": 3
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes/1/cancelar
+        name: PATCH - Cancelar inscrição
+        meta:
+          id: req_b656cc2454e54a47aa93c5a7f72b12d1
+          created: 1774545362103
+          modified: 1774547466772
+          isPrivate: false
+          description: ""
+          sortKey: -1774545421524
+        method: PATCH
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: PARTICIPANTES
+    meta:
+      id: fld_3f0536558f1943e2b63ac2362110b10f
+      created: 1774545438430
+      modified: 1774545438430
+      sortKey: -1774545438430
+      description: ""
+    children:
+      - url: http://localhost:3000/participantes
+        name: GET - Listar todos
+        meta:
+          id: req_0f79872d1daa470297fe97e36959cf42
+          created: 1774545467084
+          modified: 1774547173289
+          isPrivate: false
+          description: ""
+          sortKey: -1774547166439
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes/1
+        name: GET - Buscar por ID
+        meta:
+          id: req_7951f612acea4e9ab08bf71fdd7727b2
+          created: 1774545492581
+          modified: 1774547171927
+          isPrivate: false
+          description: ""
+          sortKey: -1774547166339
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: POST - Criar participante
+        meta:
+          id: req_13808c9968cb4383af9b643b50b1070a
+          created: 1774545505166
+          modified: 1774547170099
+          isPrivate: false
+          description: ""
+          sortKey: -1774547166239
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Lívia Oliveira Martins Matos",
+            	"email": "livia@email.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes/1
+        name: PUT - Atualizar
+        meta:
+          id: req_b78c26f0eb5143c58225b4c1876c889d
+          created: 1774545626842
+          modified: 1774547168469
+          isPrivate: false
+          description: ""
+          sortKey: -1774547166139
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Emilly Raissa Nascimento",
+            	"email": "emilly@email.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes/2
+        name: DELETE - Deletar
+        meta:
+          id: req_bde78ed2c87243c18175f62b47689241
+          created: 1774547139061
+          modified: 1774547166058
+          isPrivate: false
+          description: ""
+          sortKey: -1774547166039
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: VALIDAÇÃO
+    meta:
+      id: fld_847e0b5573014d2980f7daf3bcf6e68d
+      created: 1774954121017
+      modified: 1774955920703
+      sortKey: -1774954121017
+      description: ""
+    children:
+      - url: http://localhost:3000/eventos
+        name: 1° teste de validação (eventos)
+        meta:
+          id: req_8f41da7e6a82439b953d497774f2b189
+          created: 1774954131026
+          modified: 1774955111942
+          isPrivate: false
+          description: ""
+          sortKey: -1774954132362
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "",
+            	"data": "ontem",
+            	"capacidade": -50
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: 2° teste de validação (eventos)- Pós mudanças
+        meta:
+          id: req_f958378292e24b1c99418aa8ffb4c67e
+          created: 1774954633277
+          modified: 1774955105805
+          isPrivate: false
+          description: ""
+          sortKey: -1774954132462
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            "nome": "AB",
+            "data": "",
+            "capacidade": -10
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: TESTE CRUZADO
+    meta:
+      id: fld_2876883802a14909bae512d068c9586f
+      created: 1774955926041
+      modified: 1774955926041
+      sortKey: -1774955926041
+      description: ""
+    children:
+      - url: http://localhost:3000/inscricoes
+        name: Teste de validação - inscrições
+        meta:
+          id: req_4b85382bec2f4b1188aef3b238e325f1
+          created: 1774955114555
+          modified: 1774955945530
+          isPrivate: false
+          description: ""
+          sortKey: -1774955935703
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"eventoId": 0,
+            	"participanteId": 0
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: Teste de validação 1  - participantes
+        meta:
+          id: req_a7b4802ca8014b0a950057720b42b6e3
+          created: 1774955477769
+          modified: 1774955936521
+          isPrivate: false
+          description: ""
+          sortKey: -1774955935403
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "",
+            	"email": ""
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: Teste de validação 2 - participantes
+        meta:
+          id: req_ca65e19c183843d5a0eea0372e128609
+          created: 1774955685287
+          modified: 1774955935321
+          isPrivate: false
+          description: ""
+          sortKey: -1774955935303
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "",
+            	"email": "wagner.sabor@email.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: Teste de validação 3 - participantes
+        meta:
+          id: req_d41c2a66d49549e1aaeef7677306a2ba
+          created: 1774955777509
+          modified: 1774955941984
+          isPrivate: false
+          description: ""
+          sortKey: -1774955935603
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Wagner Sabor",
+            	"email": "wagner.saboremail.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: Teste de validação 1 - eventos
+        meta:
+          id: req_027f28431aa9486c85a616cd76ed120f
+          created: 1774955913050
+          modified: 1774956091280
+          isPrivate: false
+          description: ""
+          sortKey: -1774955935503
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Aaa",
+            	"capacidade": 0,
+            	"data": "2026-03-31"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/1
+        name: Teste de validação 2 - eventos
+        meta:
+          id: req_abc0ff751659404c98efa14fd4ceed0a
+          created: 1774956068029
+          modified: 1774956114920
+          isPrivate: false
+          description: ""
+          sortKey: -1774955935803
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "A",
+            	"capacidade": 30,
+            	"data": "2026-03-31"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: SERVICES
+    meta:
+      id: fld_7a50fd48c773464c80a9af8cee403b23
+      created: 1775148096589
+      modified: 1775148096589
+      sortKey: -1775148096589
+      description: ""
+    children:
+      - url: http://localhost:3000/eventos
+        name: POST EVENTOS - Dados válidos
+        meta:
+          id: req_bdcd4c34b50f49658babd0b884dc1f29
+          created: 1775148100428
+          modified: 1775148302952
+          isPrivate: false
+          description: ""
+          sortKey: -1775148102073
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Aula 09",
+            	"descricao": "Aula 09 com os avançados",
+            	"data": "2026-04-02",
+            	"local": "SENAI",
+            	"capacidade": 30
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.4.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: POST EVENTOS - Dados inválidos
+        meta:
+          id: req_f3cba98e20ba4a778125cd176d28ba15
+          created: 1775148383156
+          modified: 1775148429684
+          isPrivate: false
+          description: ""
+          sortKey: -1775148102173
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "",
+            	"descricao": "Aula 09 com os avançados",
+            	"data": "2026-04-02",
+            	"local": "SENAI",
+            	"capacidade": 30
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/999
+        name: GET EVENTOS - ID inválido
+        meta:
+          id: req_f6ee8e0f3c7b496ca6279221ac33398b
+          created: 1775148433144
+          modified: 1775148474585
+          isPrivate: false
+          description: ""
+          sortKey: -1775148102273
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: POST PARTICIPANTES - Email inválido
+        meta:
+          id: req_5e5f4a2bd9ad4ecba3281597ac645c10
+          created: 1775148477256
+          modified: 1775148537198
+          isPrivate: false
+          description: ""
+          sortKey: -1775148102373
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Irineu Souza",
+            	"email": "irineu.email.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes
+        name: POST INSCRIÇÕES - Evento inexistente
+        meta:
+          id: req_a933da034c2f4f55b747cf8207a44004
+          created: 1775148539355
+          modified: 1775148973497
+          isPrivate: false
+          description: ""
+          sortKey: -1775148102473
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"id": 5,
+            	"eventoId": 999,
+            	"participanteId": 2
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes
+        name: POST INSCRIÇÕES - Inscrição duplicada
+        meta:
+          id: req_fe50b1c2e2504fd19f26c18fc00c6604
+          created: 1775148981494
+          modified: 1775149614596
+          isPrivate: false
+          description: ""
+          sortKey: -1775148102573
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"eventoId": 1,
+            	"participanteId": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/rota/invalida
+        name: GET ROTA INVÁLIDA
+        meta:
+          id: req_a6a4a047bf544801afbbfc4b466b5ecc
+          created: 1775149354698
+          modified: 1775150306992
+          isPrivate: false
+          description: ""
+          sortKey: -1775148102673
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: VARIÁVEIS DE AMBIENTE
+    meta:
+      id: fld_a5f905511b1e4a9a8075d8ef55a84105
+      created: 1775558625852
+      modified: 1775558625852
+      sortKey: -1775558625852
+      description: ""
+    children:
+      - url: http://localhost:3000/eventos/99
+        name: GET INVÁLIDO + STACK
+        meta:
+          id: req_a912d64b54074f45b2541b7350b2cb3d
+          created: 1775558629980
+          modified: 1775558905001
+          isPrivate: false
+          description: ""
+          sortKey: -1775558904976
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: CLEAN CODE
+    meta:
+      id: fld_d21c6436ec8542e4b663924b157343c9
+      created: 1775559492592
+      modified: 1775559492592
+      sortKey: -1775559492592
+      description: ""
+  - name: CRUD SEQUELIZE - READ E CREATE
+    meta:
+      id: fld_30fea0c593d94b8693f7ad8dd236ce29
+      created: 1777562429494
+      modified: 1777564789037
+      sortKey: -1777562429494
+      description: ""
+    children:
+      - url: http://localhost:3000/eventos
+        name: GET EVENTOS
+        meta:
+          id: req_a7a6398154ea434b8266d2dd5592d9ea
+          created: 1777562433321
+          modified: 1777562492530
+          isPrivate: false
+          description: ""
+          sortKey: -1777562472722
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: POST EVENTOS
+        meta:
+          id: req_09ad31943ead427abe75d65e9fe1a5f9
+          created: 1777562947663
+          modified: 1777562994752
+          isPrivate: false
+          description: ""
+          sortKey: -1777562472822
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Meetup de JavaScript",
+              "descricao": "Encontro mensal de devs JS",
+              "data": "2025-11-15T19:00:00.000Z",
+              "local": "Online",
+              "capacidade": 200
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: POST EVENTOS 2
+        meta:
+          id: req_60713e8273a84ad8b8103868d1cc6200
+          created: 1777563016868
+          modified: 1777563068067
+          isPrivate: false
+          description: ""
+          sortKey: -1777562472772
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Aulão com Carlos",
+              "descricao": "Aula de matemática",
+              "data": "2026-01-05T19:00:00.000Z",
+              "local": "Escola SESI de Osvaldo Cruz",
+              "capacidade": 32
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: VALIDAÇÃO SEQUELIZE
+        meta:
+          id: req_b4e663c0f0eb40e2bd1b484bd4b44667
+          created: 1777563142078
+          modified: 1777563850728
+          isPrivate: false
+          description: ""
+          sortKey: -1777562472922
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "AB",
+              "data": null
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: GET PARTICIPANTES
+        meta:
+          id: req_43412fd818e24d0db102f16ec5649bcc
+          created: 1777563853524
+          modified: 1777564216168
+          isPrivate: false
+          description: ""
+          sortKey: -1777562473022
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: POST PARTICIPANTE DUPLICADO
+        meta:
+          id: req_a314cded656e491aac61d60443053a33
+          created: 1777564218271
+          modified: 1777564752911
+          isPrivate: false
+          description: ""
+          sortKey: -1777562473122
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "João",
+            	"email": "joao200@email.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: CRUD SEQUELIZE - UPDATE E DESTROY
+    meta:
+      id: fld_bcda570bee80482a8a61a723b3e0fb20
+      created: 1777564773287
+      modified: 1777564782737
+      sortKey: -1777564773287
+      description: ""
+    children:
+      - url: http://localhost:3000/eventos/1
+        name: "GET EVENTOS "
+        meta:
+          id: req_2c889a288c834307b360586a0f82e881
+          created: 1777564791907
+          modified: 1777564927959
+          isPrivate: false
+          description: ""
+          sortKey: -1777564927932
+        method: GET
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Workshop de Node.js (Edição Especial)",
+            	"capacidade": 50
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/1
+        name: DELETE EVENTOS
+        meta:
+          id: req_5fbe9895754143c0be404cf547bad458
+          created: 1777564931936
+          modified: 1777564999132
+          isPrivate: false
+          description: ""
+          sortKey: -1777564928032
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/1
+        name: GET EVENTO NÃO ENCONTRADO
+        meta:
+          id: req_22ec68c1793b49cc9aa017df5b16f179
+          created: 1777565001940
+          modified: 1777565039139
+          isPrivate: false
+          description: ""
+          sortKey: -1777564928132
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: TESTE INTEGRADO
+    meta:
+      id: fld_be44a57800c54e0c9d62c7d3dcca35f5
+      created: 1777567398098
+      modified: 1777567413703
+      sortKey: -1777566085742.5
+      description: ""
+    children:
+      - url: http://localhost:3000/inscricoes
+        name: GET INSCRIÇÕES
+        meta:
+          id: req_d413d7aad2a24a7c8b393e3765c192c0
+          created: 1777565985249
+          modified: 1777567409834
+          isPrivate: false
+          description: ""
+          sortKey: -1777567409813
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: GET EVENTOS
+        meta:
+          id: req_c1e1aa34a9c34aa783a9bca20896ab1e
+          created: 1777567419685
+          modified: 1777567479554
+          isPrivate: false
+          description: ""
+          sortKey: -1777567409913
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos
+        name: POST EVENTOS
+        meta:
+          id: req_7ed4720e128b4ecea37048df24c1d2f8
+          created: 1777567481422
+          modified: 1777567814132
+          isPrivate: false
+          description: ""
+          sortKey: -1777567410013
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Workshop de DS",
+            	"descricao": "Aulão com o Wagner",
+            	"data": "2026-06-30T19:00:00.000Z",
+            	"local": "Online",
+            	"capacidade": 120
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/eventos/6
+        name: PUT EVENTOS
+        meta:
+          id: req_a1b15d7c68f8423790c5ca41e511f3cb
+          created: 1777567816201
+          modified: 1777567853431
+          isPrivate: false
+          description: ""
+          sortKey: -1777567410113
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"capacidade": 60
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/participantes
+        name: GET PARTICIPANTES
+        meta:
+          id: req_838b78ae265e43beaba16b2969fd7333
+          created: 1777567881609
+          modified: 1777567898459
+          isPrivate: false
+          description: ""
+          sortKey: -1777567410213
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes
+        name: POST INSCRIÇÕES
+        meta:
+          id: req_c132b24e2d3b4f728056ea3d8524b70e
+          created: 1777567928207
+          modified: 1777568034788
+          isPrivate: false
+          description: ""
+          sortKey: -1777567410313
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"eventoId": 2,
+            	"participanteId": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/inscricoes/4/cancelar
+        name: CANCELAR INSCRICAO
+        meta:
+          id: req_3f66bb03c9c14f468fe137c5c0e8a812
+          created: 1777568068450
+          modified: 1777568144607
+          isPrivate: false
+          description: ""
+          sortKey: -1777567410413
+        method: PATCH
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_9db341f64464a06ca30ab19ddedf6f74b1f65150
+    created: 1774360833051
+    modified: 1774360833051
+environments:
+  name: Base Environment
+  meta:
+    id: env_9db341f64464a06ca30ab19ddedf6f74b1f65150
+    created: 1774360833049
+    modified: 1774360833048
+    isPrivate: false

@@ -1,82 +1,70 @@
-// Módulos internos do projeto
-const InscricaoModel = require("../models/InscricaoModel");
-const EventoModel = require("../models/EventoModel");
-const ParticipanteModel = require("../models/ParticipanteModel");
-const { NotFoundError, ValidationError } = require("../errors/AppError");
-const { isRequired, validar, isPositiveInteger } = require("../helpers/validators");
+const { Inscricao, Evento, Participante } = require('../models');
+const { NotFoundError, ValidationError } = require('../errors/AppError');
 
-function listarTodas() {
-    return InscricaoModel.listarTodas();
+async function criar(dados) {
+    const { eventoId, participanteId } = dados;
+    
+    const evento = await Evento.findByPk(eventoId);
+    if (!evento) throw new NotFoundError('Evento');
+    
+    const participante = await Participante.findByPk(participanteId);
+    if (!participante) throw new NotFoundError('Participante');
+    
+    const jaInscrito = await Inscricao.findOne({
+        where: { evento_id: eventoId, participante_id: participanteId }
+    });
+    if (jaInscrito) throw new ValidationError('Participante já inscrito neste evento');
+    
+    return await Inscricao.create({
+        evento_id: eventoId,
+        participante_id: participanteId,
+    });
 }
 
-function listarPorEvento(eventoId) {
-    const evento = EventoModel.buscarPorId(eventoId);
-
-    if (!evento) {
-        throw new NotFoundError("Evento");
-    }
-
-    return InscricaoModel.listarPorEvento(eventoId);
+async function listarTodas() {
+    return await Inscricao.findAll({
+        include: [
+            { model: Evento, as: 'evento', attributes: ['id', 'nome', 'data'] },
+            { model: Participante, as: 'participante', attributes: ['id', 'nome', 'email'] },
+        ],
+        order: [['createdAt', 'DESC']],
+    });
 }
 
-function criar(eventoId, participanteId) {
-    // 1. Validar se o evento existe
-    const evento = EventoModel.buscarPorId(eventoId);
-    if (!evento) {
-        throw new NotFoundError("Evento");
-    }
+async function listarPorEvento(eventoId) {
+    const evento = await Evento.findByPk(eventoId);
+    if (!evento) throw new NotFoundError('Evento');
 
-    // 2. Validar se o participante existe
-    const participante = ParticipanteModel.buscarPorId(participanteId);
-    if (!participante) {
-        throw new NotFoundError("Participante");
-    }
-
-    // 3. Verificar duplicata (Regra de dados: mantida no Model)
-    const jaInscrito = InscricaoModel.listarPorEvento(eventoId).find(
-        (i) => i.participanteId === participanteId
-    );
-
-    if (jaInscrito) {
-        throw new ValidationError("Participante já inscrito neste evento");
-    }
-
-    // 4. Criação da inscrição via Model
-    return InscricaoModel.criar(eventoId, participanteId);
+    return await Inscricao.findAll({
+        where: { evento_id: eventoId },
+        include: [{ model: Participante, as: 'participante' }]
+    });
 }
 
-function cancelar(id) {
-    const cancelado = InscricaoModel.cancelar(id)
-
-    if (!cancelado) {
-        throw new NotFoundError("Inscrição")
-    }
-
-    return true
+async function cancelar(id) {
+    const inscricao = await Inscricao.findByPk(id);
+    if (!inscricao) throw new NotFoundError("Inscrição");
+    
+    await inscricao.destroy();
+    return true;
 }
 
+async function buscarComDetalhes(id) {
+    const inscricao = await Inscricao.findByPk(id, {
+        include: [
+            { model: Evento, as: 'evento', attributes: ['id', 'nome', 'data'] },
+            { model: Participante, as: 'participante', attributes: ['id', 'nome', 'email'] }
+        ],
+    });
 
-function buscarComDetalhes(id) {
-    const inscricao = InscricaoModel.buscarPorId(id);
-
-    if (!inscricao) {
-        throw new NotFoundError("Inscrição");
-    }
-
-    const evento = EventoModel.buscarPorId(inscricao.eventoId);
-    const participante = ParticipanteModel.buscarPorId(inscricao.participanteId);
-
-    return {
-        ...inscricao,
-        evento,
-        participante,
-    };
+    if (!inscricao) throw new NotFoundError("Inscrição");
+    return inscricao;
 }
 
 module.exports = {
-listarTodas,
-listarPorEvento,
-buscarComDetalhes,
-criar,
-cancelar,
+    listarTodas,
+    listarPorEvento,
+    buscarComDetalhes,
+    criar,
+    cancelar,
 };

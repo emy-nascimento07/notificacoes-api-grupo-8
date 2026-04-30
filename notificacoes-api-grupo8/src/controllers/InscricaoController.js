@@ -1,68 +1,62 @@
-// Modificação para que os erros sejam lançados diretamente
-// Módulos internos do projeto
-const parseId = require("../helpers/parseId")
+const parseId = require("../helpers/parseId");
 const InscricaoService = require("../services/InscricaoService");
-const { NotFoundError, ValidationError } = require("../errors/AppError");
 
-// POST /inscricoes — criar uma inscrição
-function store(req, res, next) {
+
+async function store(req, res, next) {
   try {
     const { eventoId, participanteId } = req.body;
-    const novaInscricao = InscricaoService.criar(eventoId, participanteId);
+    const novaInscricao = await InscricaoService.criar({ eventoId, participanteId });
     res.status(201).json(novaInscricao);
   } catch (erro) {
-    console.error("Erro ao criar a inscrição:", erro.message);
-    throw erro;
+    next(erro); 
   }
 }
 
-// GET (buscar tudo) - Requisição refatorada, usando next, try e catch
-function index(req, res, next) {
+async function index(req, res, next) {
   try {
-    const inscricoes = InscricaoService.listarTodas();
+    console.log('[DEBUG] GET /inscricoes - iniciando');
+    const inscricoes = await InscricaoService.listarTodas();
+    console.log('[DEBUG] GET /inscricoes - dados obtidos:', inscricoes.length, 'registros');
+    console.log('[DEBUG] Resposta:', JSON.stringify(inscricoes, null, 2));
     res.json(inscricoes);
   } catch (erro) {
-    console.error("Erro ao buscar todas as inscrição:", erro.message);
-    throw erro;
+    console.error('[DEBUG] GET /inscricoes - ERRO:', erro.message);
+    next(erro);
   }
 }
 
-// GET (buscar por ID) - Requisição refatorada, usando next, try e catch
-function listarPorEvento(req, res, next) {
+async function listarPorEvento(req, res, next) {
   try {
     const eventoId = parseId(req.params.eventoId);
-    const inscricoes = InscricaoService.listarPorEvento(eventoId);
-
+    // Adicionado await
+    const inscricoes = await InscricaoService.listarPorEvento(eventoId);
     res.json(inscricoes);
   } catch (erro) {
-    console.error("Erro ao buscar inscrição pelo id:", erro.message);
-    throw erro;
+    next(erro);
   }
 }
 
-// PATCH (atualizar parcialmente) -  Requisição refatorada, usando next, try e catch
-function cancelar(req, res, next) {
+// DELETE ou PATCH /inscricoes/:id
+async function cancelar(req, res, next) {
   try {
     const id = parseId(req.params.id);
-    InscricaoService.cancelar(id);
-
+    // Adicionado await
+    await InscricaoService.cancelar(id);
     res.status(204).send();
   } catch (erro) {
-    console.error("Erro ao atualizar parcialmente a inscrição:", erro.message);
-    throw erro;
+    next(erro);
   }
 }
 
-// GET (buscar detalhes de uma inscrição) - Requisição refatorada, usando next, try e catch
-function detalhes(req, res, next) {
+
+async function detalhes(req, res, next) {
   try {
     const id = parseId(req.params.id);
-    const detalhes = InscricaoService.buscarComDetalhes(id);
-
-    res.json(detalhes);
+    // Adicionado await
+    const detalhesInscricao = await InscricaoService.buscarComDetalhes(id);
+    res.json(detalhesInscricao);
   } catch (erro) {
-    console.error("Erro ao buscar detalhes da inscrição:", erro.message);
-    throw erro;
+    next(erro);
   }
 }
 

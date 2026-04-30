@@ -7,21 +7,19 @@ const parseId = require("../helpers/parseId")
 
 // GET (buscar tudo) - Requisição refatorada, usando next, try e catch
 async function index(req, res, next) {
-    try {
-        const participantes = await ParticipanteService.listarTodos();
-
-        res.json(participantes);
-    } catch (erro) {
-        console.log(`Erro ao listar participantes: ${erro.message}`);
-        next(erro);
-    }
+  try {
+    const inscricoes = await InscricaoService.listarTodas();
+    res.json(inscricoes);
+  } catch (erro) {
+    next(erro);
+  }
 }
+
 
 // GET (buscar por ID) - Requisição refatorada, usando next, try e catch
 async function show(req, res, next) {
   try {
     const id = parseInt(req.params.id);
-
     const participante = await ParticipanteService.buscarPorId(id);
 
     res.json(participante);
@@ -31,33 +29,58 @@ async function show(req, res, next) {
 }
 
 // POST (criar) - Requisição refatorada, usando next, try e catch
+const InscricaoService = require('../services/InscricaoService');
+
 async function store(req, res, next) {
   try {
-    const novoParticipante = await ParticipanteService.criar(req.body);
-
-    res.status(201).json(novoParticipante);
+    const novaInscricao = await InscricaoService.criar(req.body);
+    res.status(201).json(novaInscricao);
   } catch (erro) {
-    next(erro);
+    next(erro)
   }
 }
 
+
 //Atualizar e Deletar vamos implementar na próxima aula
 
-async function atualizar(id, dados) {
+async function update(id, dados) {
 
-  // TODO: próxima aula
+  const participante = await Participante.findByPk(id);
+
+  if (!participante) {
+    throw new NotFoundError('Participante');
+  }
+  try {
+    await participante.update(dados);
+    return participante;
+  } catch (erro) {
+
+    if (erro.name === 'SequelizeValidationError') {
+      const mensagens = erro.errors.map(e => e.message).join('; ');
+      throw new ValidationError(mensagens);
+    }
+    throw erro;
+  }
 
 }
 
-async function deletar(id) {
+async function destroy(id) {
+  const participante = await Participante.findByPk(id);
+  if (!participante) {
+    throw new NotFoundError('Participante');
+  }
+  await participante.destroy();
 
-  // TODO: próxima aula
+  return true;
 
 }
 
 
 module.exports = {
-    index,
-    show,
-    store
+  index,
+  show,
+  store,
+  update,
+  destroy
+
 };

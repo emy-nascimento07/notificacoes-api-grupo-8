@@ -12,6 +12,16 @@ const Inscricao = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    evento_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: "evento_id",
+    },
+    participante_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: "participante_id",
+    },
     dataInscricao: {
       type: DataTypes.DATE,
       allowNull: false,

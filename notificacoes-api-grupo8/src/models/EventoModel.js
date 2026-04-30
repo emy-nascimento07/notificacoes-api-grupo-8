@@ -25,7 +25,8 @@ const Evento = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        isNull: { msg: "Data não pode ser nula" },
+        notNull: { msg: "Data não pode ser nula" },
+        notEmpty: { msg: "Data não pode estar vazia" },
         isDate: { msg: "Data deve ser um formato de data válido" },
       }
     },
@@ -44,7 +45,7 @@ const Evento = sequelize.define(
   {
     tableName: "eventos",
     timestamps: true, // cria createdAt e updatedAt automaticamente
-    underscored: true, 
+    underscored: true,
   },
 );
 

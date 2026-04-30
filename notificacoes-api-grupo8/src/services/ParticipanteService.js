@@ -53,5 +53,7 @@ async function deletar(id) {
 module.exports = { 
     listarTodos, 
     buscarPorId, 
-    criar
+    criar,
+    atualizar,
+    deletar
 };
