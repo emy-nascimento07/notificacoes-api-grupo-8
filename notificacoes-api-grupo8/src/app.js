@@ -29,12 +29,15 @@ const eventoRoutes = require("./routes/eventoRoutes");
 const participanteRoutes = require("./routes/participanteRoutes");
 const inscricaoRoutes = require("./routes/inscricaoRoutes");
 const exportRoutes = require('./routes/exportRoutes');
+const path = require('path');
+
 
 
 app.use("/eventos", eventoRoutes);
 app.use("/participantes", participanteRoutes);
 app.use("/inscricoes", inscricaoRoutes);
 app.use('/exportar', exportRoutes);
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 
 // Rota raiz (informativa)
