@@ -33,10 +33,13 @@ async function show(req, res, next) {
   }
 }
 
+const cache = require('../config/cache');
+
 async function store(req, res, next) {
   try {
+    
     const novoEvento = await EventoService.criar(req.body);
-
+    cache.flushAll(); // Limpa todo o cache
     res.status(201).json(novoEvento);
   } catch (erro) {
     next(erro);
@@ -49,6 +52,7 @@ async function update(req, res, next) {
 
     const eventoAtualizado = await EventoService.atualizar(id, req.body);
 
+    cache.flushAll(); // Limpa todo o cache    
     res.json(eventoAtualizado);
   } catch (erro) {
     next(erro);
@@ -61,6 +65,7 @@ async function destroy(req, res, next) {
 
     await EventoService.deletar(id);
 
+    cache.flushAll(); // Limpa todo o cache
     res.status(204).send();
   } catch (erro) {
     next(erro);
