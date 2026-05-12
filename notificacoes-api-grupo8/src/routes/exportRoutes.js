@@ -259,4 +259,74 @@ router.get('/relatorio/inscricoes/csv', async (req, res, next) => {
     }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Exportação
+ */
+
+/**
+ * @swagger
+ * /exportar/eventos/xml:
+ *   get:
+ *     summary: Exportar todos os eventos em formato XML
+ *     tags: [Exportação]
+ *     responses:
+ *       200:
+ *         description: Arquivo XML gerado com sucesso
+ *         content:
+ *           application/xml:
+ *             schema:
+ *               type: string
+ */
+
+/**
+ * @swagger
+ * /exportar/eventos/json:
+ *   get:
+ *     summary: Exportar todos os eventos em JSON (Download)
+ *     tags: [Exportação]
+ *     responses:
+ *       200:
+ *         description: Arquivo JSON para download
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Evento'
+ */
+
+/**
+ * @swagger
+ * /exportar/relatorio/inscricoes:
+ *   get:
+ *     summary: Relatório detalhado de inscrições por evento
+ *     tags: [Exportação]
+ *     responses:
+ *       200:
+ *         description: JSON contendo estatísticas e lista de inscritos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 geradoEm:
+ *                   type: string
+ *                   format: date-time
+ *                 totalEventos:
+ *                   type: integer
+ *                 relatorio:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       evento:
+ *                         type: string
+ *                       totalInscritos:
+ *                         type: integer
+ *                       vagasRestantes:
+ *                         type: integer
+ */
+
 module.exports = router;

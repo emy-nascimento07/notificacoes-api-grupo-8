@@ -66,6 +66,14 @@ npm start
 | **GET**   | `/inscricoes/evento/:eventoId` | Listar inscrições por evento |
 | **PATCH** | `/inscricoes/:id/cancelar`     | Cancelar uma inscrição       |
 
+### 📤 Exportações
+
+| Método    | Rota                           | Descrição                    |
+| :-------- | :----------------------------- | :--------------------------- |
+| **GET**  | `/exportar/eventos/xml`         | Exportar os eventos em formato xml   |
+| **GET**   | `/exportar/eventos/json`       | Exportar os eventos em formato json   |
+| **GET**   | `/exportar/relatorio/inscricoes` | Exportar relatório detalhado de inscrições por evento |
+
 ---
 
 ## ️ Tecnologias
@@ -78,28 +86,86 @@ npm start
 
 ---
 
-## 📂 Estrutura do Projeto
-
-```text
-src/
-├── controllers/ → Recebe requisições, retorna respostas
-├── services/ → Lógica de negócio e validações
-├── models/ → Acesso e manipulação de dados
-├── routes/ → Mapeamento de URLs
-├── middlewares/ → Funções intermediárias (log, erros, CORS)
-├── errors/ → Classes de erro customizadas
-├── helpers/ → Funções auxiliares (validação, etc.)
-├── swagger.js → Configuração da documentação
-├── app.js → Configuração do Express
-└── server.js → Inicialização do servidor
-```
-
----
-
 ## 🔧 Scripts
+
 | Comando | Descrição |
+
 |---------|-----------|
+
 | `npm start` | Inicia o servidor (produção) |
+
 | `npm run dev` | Inicia com Nodemon (desenvolvimento) |
 
----
+| `npm run db:migrate` | Executa migrations pendentes |
+
+| `npm run db:migrate:undo` | Desfaz última migration |
+
+| `npm run db:seed` | Insere dados iniciais |
+
+| `npm run db:reset` | Recria banco completo |
+
+
+## 🗄️ Banco de Dados
+
+- **SGBD:** MySQL
+
+- **ORM:** Sequelize
+
+- **Tabelas:** eventos, participantes, inscricoes, notificacoes
+
+
+## 📁 Estrutura do Projeto
+
+notificacoes-api/ <br>
+├── src/ <br>
+│   ├── config/ <br>
+│   │   ├── database.js          → Conexão Sequelize <br>
+│   │   ├── database.example.json        → Config do CLI <br>
+│   │   ├── upload.js            → Config do Multer <br>
+│   │   └── cache.js             → Config do cache <br>
+│   ├── database/ <br>
+│   │   ├── migrations/          → 5 migrations <br>
+│   │   └── seeders/             → Dados iniciais <br>
+│   ├── errors/ <br>
+│   │   └── AppError.js <br>
+│   ├── helpers/ <br>|
+│   │   ├── parseId.js <br>
+│   │   └── validators.js <br>
+│   ├── middlewares/ <br>
+│   │   ├── cacheMiddleware.js <br>
+│   │   ├── errorHandler.js <br>
+│   │   ├── notFound.js <br>
+│   │   ├── logger.js <br>
+│   │   └── responseTime.js <br>
+│   ├── models/ <br>
+│   │   ├── index.js             → Relacionamentos<br>
+│   │   ├── EventoModel.js       → Sequelize<br>
+│   │   ├── ParticipanteModel.js → Sequelize<br>
+│   │   ├── InscricaoModel.js    → Sequelize<br>
+│   │   └── NotificacaoModel.js  → Sequelize<br>
+│   ├── services/<br>
+│   │   ├── EventoService.js     → Async + Sequelize<br>
+│   │   ├── ParticipanteService.js<br>
+│   │   └── InscricaoService.js<br>
+│   ├── controllers/<br>
+│   │   ├── EventoController.js <br>
+│   │   ├── ParticipanteController.js<br>
+│   │   └── InscricaoController.js<br>
+│   ├── routes/<br>
+│   │   ├── eventoRoutes.js<br>
+│   │   ├── participanteRoutes.js<br>
+│   │   ├── inscricaoRoutes.js<br>
+│   │   └── exportRoutes.js      → XML, JSON, relatórios<br>
+│   ├── swagger.js<br>
+│   ├── app.js<br>
+│   └── server.js<br>
+├── uploads/                      → Arquivos enviados (não vai pro Git)<br>
+├── docs/<br>
+│   ├── diagrama-classes.png<br>
+│   └── postman-collection.json<br>
+├── .env <br>
+├── .env.example <br>
+├── .sequelizerc <br>
+├── .gitignore <br>
+├── package.json <br>
+└── README.md

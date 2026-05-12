@@ -9,18 +9,18 @@ const InscricaoController = require("../controllers/InscricaoController");
  *     Inscricao:
  *       type: object
  *       required:
- *         - eventoId
- *         - participanteId
+ *         - evento_id
+ *         - participante_id
  *         - dataInscricao
  *         - status
  *       properties:
  *         id:
  *           type: integer
  *           description: ID gerado automaticamente
- *         eventoId:
+ *         evento_id:
  *           type: integer
  *           description: ID do evento
- *         participanteId:
+ *         participante_id:
  *           type: integer
  *           description: ID do participante
  *         dataInscricao:
@@ -31,8 +31,8 @@ const InscricaoController = require("../controllers/InscricaoController");
  *           description: Status da Inscrição
  *       example:
  *         id: 1
- *         eventoId: 2
- *         participanteId: 1
+ *         evento_id: 2
+ *         participante_id: 1
  *         dataInscricao: "2026-02-25"
  *         status: "confirmada"
  */
@@ -63,7 +63,7 @@ router.get("/", InscricaoController.index);
  *     tags: [Inscricoes]
  *     parameters:
  *       - in: path
- *         name: eventoId
+ *         name: evento_id
  *         required: true
  *         schema:
  *           type: integer
@@ -95,20 +95,20 @@ router.get("/evento/:eventoId", InscricaoController.listarPorEvento);
  *           schema:
  *             type: object
  *             required:
- *               - eventoId
- *               - participanteId
+ *               - evento_id
+ *               - participante_id
  *             properties:
- *               eventoId:
+ *               evento_id:
  *                 type: integer
- *               participanteId:
+ *               participante_id:
  *                 type: integer
  *               dataInscricao:
  *                 type: string
  *               status:
  *                 type: string
  *             example:
- *               eventoId: 2
- *               participanteId: 1
+ *               evento_id: 2
+ *               participante_id: 1
  *               dataInscricao: "2026-02-25"
  *               status: "confirmada"
  *     responses:

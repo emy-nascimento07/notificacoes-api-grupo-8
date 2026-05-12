@@ -8,8 +8,8 @@ const parseId = require("../helpers/parseId")
 // GET (buscar tudo) - Requisição refatorada, usando next, try e catch
 async function index(req, res, next) {
   try {
-    const inscricoes = await InscricaoService.listarTodas();
-    res.json(inscricoes);
+    const participantes = await ParticipanteService.listarTodos();
+    res.json(participantes);
   } catch (erro) {
     next(erro);
   }
@@ -29,12 +29,12 @@ async function show(req, res, next) {
 }
 
 // POST (criar) - Requisição refatorada, usando next, try e catch
-const InscricaoService = require('../services/InscricaoService');
+const InscricaoService = require('../services/ParticipanteService');
 
 async function store(req, res, next) {
   try {
-    const novaInscricao = await InscricaoService.criar(req.body);
-    res.status(201).json(novaInscricao);
+    const novoParticipante = await ParticipanteService.criar(req.body);
+    res.status(201).json(novoParticipante);
   } catch (erro) {
     next(erro)
   }

@@ -4,8 +4,8 @@ const InscricaoService = require("../services/InscricaoService");
 
 async function store(req, res, next) {
   try {
-    const { eventoId, participanteId } = req.body;
-    const novaInscricao = await InscricaoService.criar({ eventoId, participanteId });
+    const { evento_id, participante_id } = req.body;
+    const novaInscricao = await InscricaoService.criar({ evento_id, participante_id });
     res.status(201).json(novaInscricao);
   } catch (erro) {
     next(erro); 

@@ -41,19 +41,31 @@ async function criar(dados) {
   }
 }
 
-// Atualizar e Deletar vamos implementar na próxima aula
-async function atualizar(id, dados) {
-  // TODO: próxima aula
-}
+// // Atualizar e Deletar vamos implementar na próxima aula
+// async function atualizar(id, dados) {
+//   try{
+//     const participante = await buscarPorId(id);
 
-async function deletar(id) {
-  // TODO: próxima aula
-}
+//     await participante.update(dados);
+//     return participante;
+//   } catch (erro) {
+//     if (erro.nam)
+//   }
+// }
+
+// async function deletar(id) {
+//   try{
+//     const participante = await Participante.findByPk(id);P
+//     if (!participante) {
+//       throw new NotFoundError('Participante');
+//     }
+//   }
+// }
 
 module.exports = { 
     listarTodos, 
     buscarPorId, 
     criar,
-    atualizar,
-    deletar
+    // atualizar,
+    // deletar
 };

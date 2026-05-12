@@ -1,23 +1,24 @@
-const { Inscricao, Evento, Participante } = require('../models');
+const { Inscricao, Participante } = require('../models');
 const { NotFoundError, ValidationError } = require('../errors/AppError');
+const Evento = require('../models/EventoModel');
 
 async function criar(dados) {
-    const { eventoId, participanteId } = dados;
+    const { evento_id, participante_id } = dados;
     
-    const evento = await Evento.findByPk(eventoId);
+    const evento = await Evento.findByPk(evento_id);
     if (!evento) throw new NotFoundError('Evento');
     
-    const participante = await Participante.findByPk(participanteId);
+    const participante = await Participante.findByPk(participante_id);
     if (!participante) throw new NotFoundError('Participante');
     
     const jaInscrito = await Inscricao.findOne({
-        where: { evento_id: eventoId, participante_id: participanteId }
+        where: { evento_id: evento_id, participante_id: participante_id }
     });
     if (jaInscrito) throw new ValidationError('Participante já inscrito neste evento');
     
     return await Inscricao.create({
-        evento_id: eventoId,
-        participante_id: participanteId,
+        evento_id: evento_id,
+        participante_id: participante_id,
     });
 }
 
@@ -31,12 +32,12 @@ async function listarTodas() {
     });
 }
 
-async function listarPorEvento(eventoId) {
-    const evento = await Evento.findByPk(eventoId);
+async function listarPorEvento(evento_id) {
+    const evento = await Evento.findByPk(evento_id);
     if (!evento) throw new NotFoundError('Evento');
 
     return await Inscricao.findAll({
-        where: { evento_id: eventoId },
+        where: { evento_id: evento_id },
         include: [{ model: Participante, as: 'participante' }]
     });
 }
