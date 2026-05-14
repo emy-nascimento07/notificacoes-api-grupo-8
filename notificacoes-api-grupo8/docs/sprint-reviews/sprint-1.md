@@ -1,6 +1,6 @@
 # Sprint Review — Sprint 1
 
-**Período:** 24/03/2026 a [data fim]
+**Período:** 24/03/2026 a 21/05/2026
 **Participantes:** Emilly Raissa Nascimento, Lívia Oliveira Martins Matos e Vinícius de Oliveira Silva.
 
 ## O que foi planejado
@@ -34,21 +34,17 @@
 
 1. Deploy
 2. Desenvolvimento dos Templates de E-mail
-3. Desenvolvimento das Migrations e Seeds
-4. Configuração do Nodemailer
-5. Desenvolvimento do Histórico de notificações
-6. Desenvolvimento do Envio de confirmação
-7. Finalizar documentação do projeto
-8. Apresentação do Projeto Final
-9. Finalizar documentação técnica
-10. Revisar o README
+3. Configuração do Nodemailer
+4. Desenvolvimento do Histórico de notificações
+5. Desenvolvimento do Envio de confirmação
+6. Apresentação do Projeto FinalADME
 
 
 ## Métricas
 
 - Cards planejados: 30
-- Cards concluídos: 18
-- Taxa de conclusão: 18/30 = 60%
+- Cards concluídos: 24
+- Taxa de conclusão: 24/30 = 80%
 - Commits por membro: Emilly: 17, Lívia: 13, Vinícius: 10
 
 ## Impedimentos encontrados
