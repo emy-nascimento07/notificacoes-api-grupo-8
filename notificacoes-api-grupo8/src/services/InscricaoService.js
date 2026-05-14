@@ -1,6 +1,7 @@
 const { Inscricao, Participante } = require('../models');
 const { NotFoundError, ValidationError } = require('../errors/AppError');
 const Evento = require('../models/EventoModel');
+const appEmitter = require('../events/eventEmitter');
 
 async function criar(dados) {
     const { evento_id, participante_id } = dados;
@@ -16,10 +17,14 @@ async function criar(dados) {
     });
     if (jaInscrito) throw new ValidationError('Participante já inscrito neste evento');
     
-    return await Inscricao.create({
+    const novaInscricao = await Inscricao.create({
         evento_id: evento_id,
         participante_id: participante_id,
     });
+
+    // Emitir evento - Os observers serão notificados
+    appEmitter.emit('inscricao:criada', novaInscricao);
+    return novaInscricao;
 }
 
 async function listarTodas() {
@@ -59,6 +64,10 @@ async function buscarComDetalhes(id) {
     });
 
     if (!inscricao) throw new NotFoundError("Inscrição");
+
+    await inscricao.update({ status: 'cancelada' });
+
+    appEmitter.emit('inscricao:cancelada', inscricao);
     return inscricao;
 }
 

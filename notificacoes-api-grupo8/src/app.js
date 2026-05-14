@@ -5,6 +5,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger");
 
 
+
 const app = express();
 
 // ============================================
@@ -30,6 +31,8 @@ const participanteRoutes = require("./routes/participanteRoutes");
 const inscricaoRoutes = require("./routes/inscricaoRoutes");
 const exportRoutes = require('./routes/exportRoutes');
 const path = require('path');
+const notificacaoObserver = require('./events/notificacaoObserver');
+const notificacaoRoutes = require('../src/routes/notificacoesRoutes');
 
 
 
@@ -38,7 +41,7 @@ app.use("/participantes", participanteRoutes);
 app.use("/inscricoes", inscricaoRoutes);
 app.use('/exportar', exportRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-
+app.use('/notificacoes', notificacaoRoutes);
 
 // Rota raiz (informativa)
 app.get("/", (req, res) => {

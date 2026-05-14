@@ -10,9 +10,8 @@ async function buscarPorId(id) {
 }
 
 async function criar(dados) {
+  const { nome, descricao, data, local, capacidade, banner } = dados;
   try {
-    const novoEvento = await Evento.create(dados);
-    return novoEvento;
   } catch (erro) {
     // O Sequelize lança SequelizeValidationError para validações do Model
     if (erro.name === 'SequelizeValidationError') {
@@ -20,6 +19,19 @@ async function criar(dados) {
       throw new ValidationError(mensagens);
     }
     throw erro;
+
+    const novoEvento = await Evento.create({
+      nome: nome,
+      descricao: descricao,
+      data: data,
+      local: local,
+      capacidade: capacidade,
+      banner: banner,
+    });
+    return novoEvento;
+
+    appEmitter.emit('evento:criado', novoEvento);
+    return novoEvento;
   }
 }
 
@@ -52,10 +64,11 @@ async function deletar(id) {
   if (!evento) {
     throw new NotFoundError('Evento');
   }
+
   await evento.destroy();
 
-  return true;
-
+    appEmitter.emit('evento:deletado', evento);
+    return true;
 }
 
 async function listarTodos(opcoes = {}) {

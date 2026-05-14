@@ -13,7 +13,7 @@ const Notificacao = sequelize.define(
       type: DataTypes.ENUM("confirmacao", "lembrete"),
       allowNull: false,
     },
-    destinatarioEmail: {
+    destinatario_email: {
       type: DataTypes.STRING,
       allowNull: false,
       field: "destinatario_email",
