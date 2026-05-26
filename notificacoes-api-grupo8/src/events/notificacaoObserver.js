@@ -5,7 +5,6 @@ const confirmacaoInscricao = require('../templates/email/confirmacaoInscricao');
 const cancelamentoInscricao = require('../templates/email/cancelamentoInscricao');
 const criacaoParticipante = require('../templates/email/criacaoParticipante');
 
-// Helper para ajudar a buscar dados completos da inscrição
 async function buscarDadosInscricao(inscricaoId) {
   return await Inscricao.findByPk(inscricaoId, {
     include: [
@@ -15,25 +14,39 @@ async function buscarDadosInscricao(inscricaoId) {
   });
 }
 
-// Helper para ajudar a buscar dados completos do participante
 async function buscarDadosParticipante(participante_id) {
   return await Participante.findByPk(participante_id);
 }
 
-// Helper para salvar notificação no banco
 async function salvarNotificacao(dados) {
   return await Notificacao.create(dados);
 }
 
-// OBSERVER DE INSCRIÇÃO CRIADA
+async function verificarDuplicata(inscricaoId) {
+  const jaNotificado = await Notificacao.findOne({
+    where: {
+      inscricao_id: inscricaoId,
+      tipo: 'confirmacao',
+      enviada: true,
+    }
+  });
+  return !!jaNotificado;
+}
+
 appEmitter.on('inscricao:criada', async (inscricao) => {
   try {
     console.log(`[OBSERVER] Nova inscrição detectada: #${inscricao.id}`);
+
+    const existeDuplicata = await verificarDuplicata(inscricao.id);
+    if (existeDuplicata) {
+      console.log(`[NOTIFICAÇÃO] Confirmação já enviada, ignorando duplicata!`);
+      return;
+    }
+
     const dados = await buscarDadosInscricao(inscricao.id);
-
     if (!dados) return;
-    const { evento, participante } = dados;
 
+    const { evento, participante } = dados;
     const assunto = `Inscrição confirmada: ${evento.nome}`;
 
     const html = confirmacaoInscricao({
@@ -62,12 +75,12 @@ appEmitter.on('inscricao:criada', async (inscricao) => {
   }
 });
 
-// OBSERVER: INSCRIÇÃO CANCELADA
 appEmitter.on('inscricao:cancelada', async (inscricao) => {
   try {
     console.log(`[OBSERVER] Inscrição cancelada detectada: #${inscricao.id}`);
     const dados = await buscarDadosInscricao(inscricao.id);
     if (!dados) return;
+
     const { evento, participante } = dados;
     const assunto = `Inscrição cancelada: ${evento.nome}`;
 
@@ -80,7 +93,7 @@ appEmitter.on('inscricao:cancelada', async (inscricao) => {
 
     await salvarNotificacao({
       inscricao_id: inscricao.id,
-      tipo: 'cancelamento', 
+      tipo: 'cancelamento',
       destinatario_email: participante.email,
       assunto,
       conteudo: html,
@@ -95,14 +108,13 @@ appEmitter.on('inscricao:cancelada', async (inscricao) => {
   }
 });
 
-// OBSERVAÇÃO DE PARTICIPANTE
 appEmitter.on('participante:criado', async (participante) => {
   try {
     console.log(`[OBSERVER] Novo participante detectado: #${participante.id}`);
 
     const dadosParticipante = await buscarDadosParticipante(participante.id);
     if (!dadosParticipante) return;
-    
+
     const assunto = `Boas-vindas!🎉`;
 
     const html = criacaoParticipante({
