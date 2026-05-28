@@ -43,6 +43,7 @@ npm start
 | :--------- | :------------- | :---------------------- |
 | **GET**    | `/eventos`     | Listar todos os eventos |
 | **GET**    | `/eventos/:id` | Buscar evento por ID    |
+| **GET**    | `/eventos/futuro` | Buscar eventos que ainda não aconteceram    |
 | **POST**   | `/eventos`     | Criar um novo evento    |
 | **PUT**    | `/eventos/:id` | Atualizar um evento     |
 | **DELETE** | `/eventos/:id` | Deletar um evento       |
@@ -64,7 +65,9 @@ npm start
 | **POST**  | `/inscricoes`                  | Criar uma nova inscrição     |
 | **GET**   | `/inscricoes`                  | Listar todas as inscrições   |
 | **GET**   | `/inscricoes/evento/:eventoId` | Listar inscrições por evento |
+| **GET** | `/inscricoes/:id/detalhes`     | Ver detalhes de uma inscrição |
 | **PATCH** | `/inscricoes/:id/cancelar`     | Cancelar uma inscrição       |
+
 
 ### 📤 Exportações
 
@@ -74,11 +77,34 @@ npm start
 | **GET**   | `/exportar/eventos/json`       | Exportar os eventos em formato json   |
 | **GET**   | `/exportar/relatorio/inscricoes` | Exportar relatório detalhado de inscrições por evento |
 
+### 🔔 Notificações 
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/notificacoes` | Listar (filtros: tipo, enviada) |
+| GET | `/notificacoes/estatisticas` | Dashboard de envios |
+| GET | `/notificacoes/:id `| Detalhes da notificação|
+| POST |` /notificacoes/:id/reenviar` | Reenviar notificação |
+| POST | `/notificacoes/teste-email` | Enviar e-mail de teste |
+
+## 📧 Sistema de Notificações
+
+A API envia e-mails automaticamente usando o **Padrão Observer**:
+
+- **Confirmação de inscrição** — enviado ao criar uma inscrição
+
+- **Cancelamento** — enviado ao cancelar uma inscrição
+
+Em desenvolvimento, os e-mails são capturados pelo **MailPit** (servidor SMTP local).
+
+Visualize os e-mails em `http://MAILPIT_IP:8025`.
+
 ---
 
 ## ️ Tecnologias
 - Node.js
 - Express.js
+- MySQL
+- Sequelize
 - Swagger (swagger-jsdoc + swagger-ui-express)
 - Dotenv (variáveis de ambiente)
 - Nodemon (desenvolvimento)
@@ -111,26 +137,53 @@ npm start
 
 - **ORM:** Sequelize
 
-- **Tabelas:** eventos, participantes, inscricoes, notificacoes
+- **Tabelas:** eventos, participantes, inscricoes, notificacoes, sequelizemeta
 
 
 ## 📁 Estrutura do Projeto
 
 notificacoes-api/ <br>
+├── docs/<br>
+│   ├── diagramas/<br>
+│   ├── print-requisições/<br>
+│   ├── projetos-insomnia/<br>
+│   ├── sprint-reviews<br>
+│   ├── arquitetura.md<br>
+│   ├── auditoria-qualidade.md<br>
+│   ├── custos.md<br>
+│   ├── definition-of-done.md<br>
+│   ├── infraestrutura.md<br>
+│   ├── pesquisa-mercado.md<br>
+│   ├── postman-collection.json<br>
+│   ├── postman-collection.yaml<br>
+│   ├── project-charter.md<br>
+│   ├── relatorio-final.md<br>
+│   ├── riscos.md<br>
+│   ├── standup-log.md<br>
+│   ├── status-report.md<br>
+│   ├── teste-integração.md<br>
+│   └── wbs.md<br>
 ├── src/ <br>
 │   ├── config/ <br>
 │   │   ├── database.js          → Conexão Sequelize <br>
 │   │   ├── database.example.json        → Config do CLI <br>
 │   │   ├── upload.js            → Config do Multer <br>
-│   │   └── cache.js             → Config do cache <br>
+│   │   ├── cache.js             → Config do cache <br>
+│   │   └── config.json             
 │   ├── database/ <br>
 │   │   ├── migrations/          → 5 migrations <br>
 │   │   └── seeders/             → Dados iniciais <br>
 │   ├── errors/ <br>
 │   │   └── AppError.js <br>
+│   ├── events/ <br>
+│   │   ├── eventEmitter.js <br>
+│   │   ├── logObserver.js <br>
+│   │   └── notificacaoObserver.js <br>
 │   ├── helpers/ <br>|
 │   │   ├── parseId.js <br>
 │   │   └── validators.js <br>
+│   ├── logs/ <br>
+│   │   └── app.log <br>
 │   ├── middlewares/ <br>
 │   │   ├── cacheMiddleware.js <br>
 │   │   ├── errorHandler.js <br>
@@ -143,29 +196,37 @@ notificacoes-api/ <br>
 │   │   ├── ParticipanteModel.js → Sequelize<br>
 │   │   ├── InscricaoModel.js    → Sequelize<br>
 │   │   └── NotificacaoModel.js  → Sequelize<br>
-│   ├── services/<br>
-│   │   ├── EventoService.js     → Async + Sequelize<br>
-│   │   ├── ParticipanteService.js<br>
-│   │   └── InscricaoService.js<br>
-│   ├── controllers/<br>
-│   │   ├── EventoController.js <br>
-│   │   ├── ParticipanteController.js<br>
-│   │   └── InscricaoController.js<br>
 │   ├── routes/<br>
 │   │   ├── eventoRoutes.js<br>
 │   │   ├── participanteRoutes.js<br>
 │   │   ├── inscricaoRoutes.js<br>
+│   │   ├── notificacaoRoutes.js<br>
 │   │   └── exportRoutes.js      → XML, JSON, relatórios<br>
-│   ├── swagger.js<br>
+│   ├── services/<br>
+│   │   ├── EventoService.js     → Async + Sequelize<br>
+│   │   ├── ParticipanteService.js<br>
+│   │   ├── InscricaoService.js<br>
+│   │   ├── NotificacaoService.js<br>
+│   │   └── EmailService.js<br>
+│   ├── templates/<br>
+│   │   ├── email/<br>
+│   │   │   ├── baseTemplate.js<br>
+│   │   │   ├── cancelamentoInscricao.js<br>
+│   │   │   ├── ConfirmacaoInscricao.js<br>
+│   │   │   ├── criacaoParticipantes.js<br>
+│   │   │   └── lembreteEvento.js<br>
+│   ├── controllers/<br>
+│   │   ├── EventoController.js <br>
+│   │   ├── ParticipanteController.js<br>
+│   │   └── InscricaoController.js<br>
 │   ├── app.js<br>
-│   └── server.js<br>
-├── uploads/                      → Arquivos enviados (não vai pro Git)<br>
-├── docs/<br>
-│   ├── diagrama-classes.png<br>
-│   └── postman-collection.json<br>
-├── .env <br>
+│   ├── server.js<br>
+│   └── swagger.js<br>
+├── uploads/                  → Banners <br>
+├── .env <br>  
 ├── .env.example <br>
+├── .gitignore          → Arquivos enviados (não vão para o Git)<br>
 ├── .sequelizerc <br>
-├── .gitignore <br>
+├── package-lock.json <br>
 ├── package.json <br>
 └── README.md
