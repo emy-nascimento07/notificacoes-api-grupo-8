@@ -1,268 +1,13 @@
 const express = require("express");
-
 const router = express.Router();
-
 const { Evento, Participante, Inscricao } = require("../models");
-
 const { create } = require("xmlbuilder2");
-
-// GET /exportar/eventos/xml — exportar eventos em XML
-
-router.get("/eventos/xml", async (req, res, next) => {
-    try {
-        const eventos = await Evento.findAll({ order: [["data", "ASC"]] });
-
-        const xml = create({ version: "1.0", encoding: "UTF-8" }).ele("eventos");
-
-        eventos.forEach((evento) => {
-            xml
-                .ele("evento")
-
-                .ele("id")
-                .txt(String(evento.id))
-                .up()
-
-                .ele("nome")
-                .txt(evento.nome)
-                .up()
-
-                .ele("descricao")
-                .txt(evento.descricao || "")
-                .up()
-
-                .ele("data")
-                .txt(evento.data.toISOString())
-                .up()
-
-                .ele("local")
-                .txt(evento.local || "")
-                .up()
-
-                .ele("capacidade")
-                .txt(String(evento.capacidade || 0))
-                .up()
-
-                .up();
-        });
-
-        const xmlString = xml.end({ prettyPrint: true });
-
-        res.set("Content-Type", "application/xml");
-
-        res.send(xmlString);
-    } catch (erro) {
-        next(erro);
-    }
-});
-
-// GET /exportar/inscricoes/xml
-
-router.get("/inscricoes/xml", async (req, res, next) => {
-    try {
-        const inscricoes = await Inscricao.findAll({
-            include: [
-                { model: Participante, as: "participante" },
-                { model: Evento, as: "evento" },
-            ],
-        });
-
-        const xml = create({ version: "1.0", encoding: "UTF-8" }).ele("inscricoes");
-
-        inscricoes.forEach((inscricao) => {
-            xml
-                .ele("inscricao")
-
-                .ele("id")
-                .txt(String(inscricao.id))
-                .up()
-
-                .ele("status")
-                .txt(inscricao.status || "")
-                .up()
-
-                .ele("evento_nome")
-                .txt(inscricao.evento.nome)
-                .up()
-
-                .ele("nome_participante")
-                .txt(inscricao.participante.nome)
-                .up()
-
-                .ele("email_participante")
-                .txt(inscricao.participante.email)
-                .up()
-
-                .up();
-        });
-
-        const xmlString = xml.end({ prettyPrint: true });
-
-        res.set("Content-Type", "application/xml");
-
-        res.send(xmlString);
-    } catch (erro) {
-        next(erro);
-    }
-});
-
-// GET /exportar/eventos/json — exportar eventos em JSON (download)
-
-router.get("/eventos/json", async (req, res, next) => {
-    try {
-        const eventos = await Evento.findAll({
-            order: [["data", "ASC"]],
-
-            raw: true,
-        });
-
-        res.set("Content-Type", "application/json");
-
-        res.set("Content-Disposition", 'attachment; filename="eventos.json"');
-
-        res.json(eventos);
-    } catch (erro) {
-        next(erro);
-    }
-});
-
-// GET /exportar/relatorio/inscricoes — relatório de inscrições por evento
-
-router.get("/relatorio/inscricoes", async (req, res, next) => {
-    try {
-        const eventos = await Evento.findAll({
-            include: [
-                {
-                    model: Inscricao,
-                    as: "inscricoes",
-
-                    include: [
-                        {
-                            model: Participante,
-                            as: "participante",
-                            attributes: ["nome", "email"],
-                        },
-                    ],
-                },
-            ],
-
-            order: [["data", "ASC"]],
-        });
-
-        // Formatar o relatório
-
-        const relatorio = eventos.map((evento) => ({
-            evento: evento.nome,
-            data: evento.data,
-            capacidade: evento.capacidade,
-            totalInscritos: evento.inscricoes.length,
-            vagasRestantes: (evento.capacidade || 0) - evento.inscricoes.length,
-            inscritos: evento.inscricoes.map((i) => ({
-                nome: i.participante.nome,
-
-                email: i.participante.email,
-                status: i.status,
-                dataInscricao: i.dataInscricao,
-            })),
-        }));
-
-        res.json({
-            geradoEm: new Date().toISOString(),
-            totalEventos: relatorio.length,
-            relatorio,
-        });
-    } catch (erro) {
-        next(erro);
-    }
-});
-
-// GET /exportar/relatorio/inscricoes — relatório de inscrições por evento
-
-router.get("/relatorio/inscricoes", async (req, res, next) => {
-    try {
-        const eventos = await Evento.findAll({
-            include: [
-                {
-                    model: Inscricao,
-                    as: "inscricoes",
-                    include: [
-                        {
-                            model: Participante,
-                            as: "participante",
-                            attributes: ["nome", "email"],
-                        },
-                    ],
-                },
-            ],
-            order: [["data", "ASC"]],
-        });
-
-        // Formatar o relatório
-
-        const relatorio = eventos.map((evento) => ({
-            evento: evento.nome,
-            data: evento.data,
-            capacidade: evento.capacidade,
-            totalInscritos: evento.inscricoes.length,
-            vagasRestantes: (evento.capacidade || 0) - evento.inscricoes.length,
-            inscritos: evento.inscricoes.map((i) => ({
-                nome: i.participante.nome,
-                email: i.participante.email,
-                status: i.status,
-                dataInscricao: i.dataInscricao,
-            })),
-        }));
-
-        res.json({
-            geradoEm: new Date().toISOString(),
-            totalEventos: relatorio.length,
-            relatorio,
-        });
-    } catch (erro) {
-        next(erro);
-    }
-});
-
-
-// GET /exportar/relatorio/inscricoes/csv
-
-router.get('/relatorio/inscricoes/csv', async (req, res, next) => {
-    try {
-        const inscricoes = await Inscricao.findAll({
-            include: [
-                { model: Evento, as: 'evento', attributes: ['nome', 'data'] },
-                { model: Participante, as: 'participante', attributes: ['nome', 'email'] },
-            ],
-            raw: true,
-            nest: true,
-        });
-
-        // Montar o cabeçalho do CSV
-        let csv = 'ID,Evento,Data Evento,Participante,Email,Status,Data Inscricao\n';
-
-        // Montar as linhas
-        inscricoes.forEach(i => {
-            id = i.id;
-            eventoId = i.evento_id;
-            eventoNome = i.evento.nome;
-            participanteId = i.participante_id;
-            participanteNome = i.participante.nome;
-            participanteEmail = i.participante.email;
-            data_inscricao = i.dataInscricao;
-            status = i.status;
-    });
-
-        res.set('Content-Type', 'text/csv');
-        res.set('Content-Disposition', 'attachment; filename="inscricoes.csv"');
-        res.send(csv);
-    } catch (erro) {
-        next(erro);
-    }
-});
 
 /**
  * @swagger
  * tags:
  *   - name: Exportação
+ *     description: Endpoints para geração de relatórios e exportação de dados
  */
 
 /**
@@ -279,6 +24,74 @@ router.get('/relatorio/inscricoes/csv', async (req, res, next) => {
  *             schema:
  *               type: string
  */
+router.get("/eventos/xml", async (req, res, next) => {
+    try {
+        const eventos = await Evento.findAll({ order: [["data", "ASC"]] });
+        const xml = create({ version: "1.0", encoding: "UTF-8" }).ele("eventos");
+
+        eventos.forEach((evento) => {
+            xml
+                .ele("evento")
+                .ele("id").txt(String(evento.id)).up()
+                .ele("nome").txt(evento.nome).up()
+                .ele("descricao").txt(evento.descricao || "").up()
+                .ele("data").txt(evento.data ? new Date(evento.data).toISOString() : "").up()
+                .ele("local").txt(evento.local || "").up()
+                .ele("capacidade").txt(String(evento.capacidade || 0)).up()
+                .up();
+        });
+
+        const xmlString = xml.end({ prettyPrint: true });
+        res.set("Content-Type", "application/xml");
+        res.send(xmlString);
+    } catch (erro) {
+        next(erro);
+    }
+});
+
+/**
+ * @swagger
+ * /exportar/inscricoes/xml:
+ *   get:
+ *     summary: Exportar todas as inscrições em formato XML
+ *     tags: [Exportação]
+ *     responses:
+ *       200:
+ *         description: Arquivo XML de inscrições gerado com sucesso
+ *         content:
+ *           application/xml:
+ *             schema:
+ *               type: string
+ */
+router.get("/inscricoes/xml", async (req, res, next) => {
+    try {
+        const inscricoes = await Inscricao.findAll({
+            include: [
+                { model: Participante, as: "participante" },
+                { model: Evento, as: "evento" },
+            ],
+        });
+
+        const xml = create({ version: "1.0", encoding: "UTF-8" }).ele("inscricoes");
+
+        inscricoes.forEach((inscricao) => {
+            xml
+                .ele("inscricao")
+                .ele("id").txt(String(inscricao.id)).up()
+                .ele("status").txt(inscricao.status || "").up()
+                .ele("evento_nome").txt(inscricao.evento?.nome || "").up()
+                .ele("nome_participante").txt(inscricao.participante?.nome || "").up()
+                .ele("email_participante").txt(inscricao.participante?.email || "").up()
+                .up();
+        });
+
+        const xmlString = xml.end({ prettyPrint: true });
+        res.set("Content-Type", "application/xml");
+        res.send(xmlString);
+    } catch (erro) {
+        next(erro);
+    }
+});
 
 /**
  * @swagger
@@ -296,6 +109,20 @@ router.get('/relatorio/inscricoes/csv', async (req, res, next) => {
  *               items:
  *                 $ref: '#/components/schemas/Evento'
  */
+router.get("/eventos/json", async (req, res, next) => {
+    try {
+        const eventos = await Evento.findAll({
+            order: [["data", "ASC"]],
+            raw: true,
+        });
+
+        res.set("Content-Type", "application/json");
+        res.set("Content-Disposition", 'attachment; filename="eventos.json"');
+        res.json(eventos);
+    } catch (erro) {
+        next(erro);
+    }
+});
 
 /**
  * @swagger
@@ -328,5 +155,95 @@ router.get('/relatorio/inscricoes/csv', async (req, res, next) => {
  *                       vagasRestantes:
  *                         type: integer
  */
+router.get("/relatorio/inscricoes", async (req, res, next) => {
+    try {
+        const eventos = await Evento.findAll({
+            include: [
+                {
+                    model: Inscricao,
+                    as: "inscricoes",
+                    include: [
+                        {
+                            model: Participante,
+                            as: "participante",
+                            attributes: ["nome", "email"],
+                        },
+                    ],
+                },
+            ],
+            order: [["data", "ASC"]],
+        });
+
+        const relatorio = eventos.map((evento) => ({
+            evento: evento.nome,
+            data: evento.data,
+            capacidade: evento.capacidade,
+            totalInscritos: evento.inscricoes.length,
+            vagasRestantes: (evento.capacidade || 0) - evento.inscricoes.length,
+            inscritos: evento.inscricoes.map((i) => ({
+                nome: i.participante?.nome || "",
+                email: i.participante?.email || "",
+                status: i.status,
+                dataInscricao: i.dataInscricao,
+            })),
+        }));
+
+        res.json({
+            geradoEm: new Date().toISOString(),
+            totalEventos: relatorio.length,
+            relatorio,
+        });
+    } catch (erro) {
+        next(erro);
+    }
+});
+
+/**
+ * @swagger
+ * /exportar/relatorio/inscricoes/csv:
+ *   get:
+ *     summary: Exportar relatório de inscrições em formato CSV (Download)
+ *     tags: [Exportação]
+ *     responses:
+ *       200:
+ *         description: Arquivo CSV pronto para download
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ */
+router.get('/relatorio/inscricoes/csv', async (req, res, next) => {
+    try {
+        const inscricoes = await Inscricao.findAll({
+            include: [
+                { model: Evento, as: 'evento', attributes: ['nome', 'data'] },
+                { model: Participante, as: 'participante', attributes: ['nome', 'email'] },
+            ],
+            raw: true,
+            nest: true,
+        });
+
+        let csv = 'ID,Evento,Data Evento,Participante,Email,Status,Data Inscricao\n';
+
+        // CORREÇÃO: Montando as linhas do CSV corretamente e tratando aspas/vírgulas
+        inscricoes.forEach(i => {
+            const id = i.id;
+            const eventoNome = i.evento?.nome ? `"${i.evento.nome.replace(/"/g, '""')}"` : "";
+            const eventoData = i.evento?.data ? new Date(i.evento.data).toISOString() : "";
+            const participanteNome = i.participante?.nome ? `"${i.participante.nome.replace(/"/g, '""')}"` : "";
+            const participanteEmail = i.participante?.email || "";
+            const status = i.status || "";
+            const dataInscricao = i.dataInscricao ? new Date(i.dataInscricao).toISOString() : "";
+
+            csv += `${id},${eventoNome},${eventoData},${participanteNome},${participanteEmail},${status},${dataInscricao}\n`;
+        });
+
+        res.set('Content-Type', 'text/csv');
+        res.set('Content-Disposition', 'attachment; filename="inscricoes.csv"');
+        res.send(csv);
+    } catch (erro) {
+        next(erro);
+    }
+});
 
 module.exports = router;

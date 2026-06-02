@@ -70,7 +70,6 @@ router.post("/teste-email", async (req, res, next) => {
   }
 });
 
-
 /**
  * @swagger
  * components:
@@ -92,6 +91,21 @@ router.post("/teste-email", async (req, res, next) => {
  *         data_envio:
  *           type: string
  *           format: date-time
+ *     Erro:
+ *       type: object
+ *       properties:
+ *         erro:
+ *           type: object
+ *           properties:
+ *             tipo:
+ *               type: string
+ *               example: NotFoundError
+ *             mensagem:
+ *               type: string
+ *               example: Notificação não encontrada
+ *             statusCode:
+ *               type: integer
+ *               example: 404
  */
 
 /**
@@ -114,6 +128,18 @@ router.post("/teste-email", async (req, res, next) => {
  *     responses:
  *       200:
  *         description: Lista de notificações
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Notificacao'
+ *       404:
+ *         description: Notificação não encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 
 /**
@@ -124,7 +150,52 @@ router.post("/teste-email", async (req, res, next) => {
  *     tags: [Notificações]
  *     responses:
  *       200:
- *         description: Contagens de notificações
+ *         description: Notificação encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                 enviadas:
+ *                   type: integer
+ *                 pendentes:
+ *                   type: integer
+ *             $ref: '#/components/schemas/Notificacao'
+ *       404:
+ *         description: Notificação não encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
+ */
+
+/**
+ * @swagger
+ * /notificacoes/{id}:
+ *   get:
+ *     summary: Detalhes da Notificação
+ *     tags: [Notificações]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Notificação encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Notificacao'
+ *       404:
+ *         description: Notificação não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 
 /**
@@ -142,8 +213,43 @@ router.post("/teste-email", async (req, res, next) => {
  *     responses:
  *       200:
  *         description: Notificação reenviada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensagem:
+ *                   type: string
+ *                 visualizarEm:
+ *                   type: string
+ *               $ref: '#/components/schemas/Notificacao'
  *       404:
  *         description: Notificação não encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
+ */
+
+/**
+ * @swagger
+ * /notificacoes/teste-email:
+ *   post:
+ *     summary: Testar o envio de email
+ *     tags: [Notificações]
+ *     responses:
+ *       200:
+ *         description: E-mail de teste enviado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Notificacao'
+ *       404:
+ *         description: Email de teste não enviado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 
 module.exports = router;

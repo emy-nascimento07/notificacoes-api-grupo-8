@@ -39,39 +39,80 @@ const cacheMiddleware = require("../middlewares/cacheMiddleware");
  *         data: "2025-08-15"
  *         local: SENAI - Sala 3
  *         capacidade: 30
+ *     Erro:
+ *       type: object
+ *       properties:
+ *         erro:
+ *           type: object
+ *           properties:
+ *             tipo:
+ *               type: string
+ *               example: NotFoundError
+ *             mensagem:
+ *               type: string
+ *               example: Evento não encontrado(a)
+ *             statusCode:
+ *               type: integer
+ *               example: 404
  */
 
+// Listar com paginação e filtros
 /**
  * @swagger
  * /eventos:
  *   get:
- *     summary: Listar todos os eventos
+ *     summary: Listar eventos com paginação e filtros
  *     tags: [Eventos]
+ *     parameters:
+ *       - in: query
+ *         name: pagina
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Número da página
+ *       - in: query
+ *         name: porPagina
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Itens por página
+ *       - in: query
+ *         name: busca
+ *         schema:
+ *           type: string
+ *         description: Buscar por nome do evento
+ *       - in: query
+ *         name: ordenarPor
+ *         schema:
+ *           type: string
+ *           default: data
+ *         description: Campo para ordenação
+ *       - in: query
+ *         name: ordem
+ *         schema:
+ *           type: string
+ *           enum: [ASC, DESC]
+ *           default: ASC
  *     responses:
  *       200:
- *         description: Lista de eventos
+ *         description: Lista paginada de eventos retornada com sucesso
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Evento'
+ *               type: object
+ *               properties:
+ *                 dados:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Evento'
+ *                 total:
+ *                   type: integer
+ *                 pagina:
+ *                   type: integer
+ *                 totalPaginas:
+ *                   type: integer
  */
 router.get("/", cacheMiddleware(30), EventoController.index);
-
-/**
- * @swagger
- * /eventos/futuros:
- *   get:
- *     summary: Listar eventos futuros
- *     tags: [Eventos]
- *     responses:
- *       200:
- *         description: Lista de eventos futuros
- *       404:
- *         description: Não existem eventos futuros
- */
-router.get("/futuros", EventoController.futuros);
 
 /**
  * @swagger
@@ -95,6 +136,10 @@ router.get("/futuros", EventoController.futuros);
  *               $ref: '#/components/schemas/Evento'
  *       404:
  *         description: Evento não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 router.get("/:id", cacheMiddleware(60), EventoController.show);
 
@@ -131,10 +176,18 @@ router.get("/:id", cacheMiddleware(60), EventoController.show);
  *               local: "SENAI - Sala 5"
  *               capacidade: 50
  *     responses:
- *       201:
- *         description: Evento criado com sucesso
- *       400:
- *         description: Dados inválidos
+ *       200:
+ *         description: Evento encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Evento'
+ *       404:
+ *         description: Evento não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 router.post("/", EventoController.store);
 
@@ -169,9 +222,17 @@ router.post("/", EventoController.store);
  *                 type: integer
  *     responses:
  *       200:
- *         description: Evento atualizado
+ *         description: Evento encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Evento'
  *       404:
  *         description: Evento não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 router.put("/:id", EventoController.update);
 
@@ -188,10 +249,18 @@ router.put("/:id", EventoController.update);
  *         schema:
  *           type: integer
  *     responses:
- *       204:
- *         description: Evento deletado
+ *       200:
+ *         description: Evento encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Evento'
  *       404:
  *         description: Evento não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 router.delete("/:id", EventoController.destroy);
 
@@ -228,6 +297,59 @@ router.post("/:id/banner", upload.single("banner"), async (req, res, next) => {
 });
 
 /**
+
+ * @swagger
+ * components:
+ *   schemas:
+ *     Evento:
+ *       type: object
+ *       required:
+ *         - nome
+ *         - data
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID gerado automaticamente
+ *         nome:
+ *           type: string
+ *           description: Nome do evento
+ *         descricao:
+ *           type: string
+ *           description: Descrição do evento
+ *         data:
+ *           type: string
+ *           description: Data do evento
+ *         local:
+ *           type: string
+ *           description: Local do evento
+ *         capacidade:
+ *           type: integer
+ *           description: Capacidade máxima
+ *       example:
+ *         id: 1
+ *         nome: Workshop de Node.js
+ *         descricao: Aprenda Node.js do zero
+ *         data: "2025-08-15"
+ *         local: SENAI - Sala 3
+ *         capacidade: 30
+ *     Erro:
+ *       type: object
+ *       properties:
+ *         erro:
+ *           type: object
+ *           properties:
+ *             tipo:
+ *               type: string
+ *               example: NotFoundError
+ *             mensagem:
+ *               type: string
+ *               example: Evento não encontrado(a)
+ *             statusCode:
+ *               type: integer
+ *               example: 404
+ */
+
+/**
  * @swagger
  * /eventos/{id}/banner:
  *   post:
@@ -250,7 +372,7 @@ router.post("/:id/banner", upload.single("banner"), async (req, res, next) => {
  *               banner:
  *                 type: string
  *                 format: binary
- *                 description: Arquivo de imagem (png, jpg, jpeg)
+ *                 description: Imagem do Banner (JPEG, PNG, GIF, WebP - máx 5MB)
  *     responses:
  *       200:
  *         description: Banner atualizado com sucesso
@@ -264,4 +386,29 @@ router.post("/:id/banner", upload.single("banner"), async (req, res, next) => {
  *       404:
  *         description: Evento não encontrado
  */
+
+/**
+ * @swagger
+ * /eventos/futuros:
+ *   get:
+ *     summary: Listar eventos futuros
+ *     tags: [Eventos]
+ *     responses:
+ *       200:
+ *         description: Nenhum evento encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Evento'
+ *       404:
+ *         description: Evento não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
+ */
+router.get("/futuros", EventoController.futuros);
+
+
+
 module.exports = router;

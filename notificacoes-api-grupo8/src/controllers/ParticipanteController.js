@@ -2,8 +2,7 @@
 const ParticipanteService = require("../services/ParticipanteService");
 const { NotFoundError, ValidationError } = require("../errors/AppError");
 const { isRequired, isEmail, minLength, validar } = require("../helpers/validators");
-const parseId = require("../helpers/parseId")
-
+const parseId = require("../helpers/parseId");
 
 // GET (buscar tudo) - Requisição refatorada, usando next, try e catch
 async function index(req, res, next) {
@@ -14,7 +13,6 @@ async function index(req, res, next) {
     next(erro);
   }
 }
-
 
 // GET (buscar por ID) - Requisição refatorada, usando next, try e catch
 async function show(req, res, next) {
@@ -29,52 +27,36 @@ async function show(req, res, next) {
 }
 
 // POST (criar) - Requisição refatorada, usando next, try e catch
-const InscricaoService = require('../services/ParticipanteService');
-
 async function store(req, res, next) {
   try {
     const novoParticipante = await ParticipanteService.criar(req.body);
     res.status(201).json(novoParticipante);
   } catch (erro) {
-    next(erro)
+    next(erro);
   }
 }
 
+// PUT (atualizar) - Requisição refatorada, usando next, try e catch
 
-//Atualizar e Deletar vamos implementar na próxima aula
-
-async function update(id, dados) {
-
-  const participante = await Participante.findByPk(id);
-
-  if (!participante) {
-    throw new NotFoundError('Participante');
-  }
+async function update(req, res, next) {
   try {
-    await participante.update(dados);
-    return participante;
+    const id = parseInt(req.params.id); 
+    const participanteAtualizado = await ParticipanteService.atualizar(id, req.body);
+    res.status(200).json(participanteAtualizado);
   } catch (erro) {
-
-    if (erro.name === 'SequelizeValidationError') {
-      const mensagens = erro.errors.map(e => e.message).join('; ');
-      throw new ValidationError(mensagens);
-    }
-    throw erro;
+    next(erro);
   }
-
 }
 
-async function destroy(id) {
-  const participante = await Participante.findByPk(id);
-  if (!participante) {
-    throw new NotFoundError('Participante');
+async function destroy(req, res, next) {
+  try {
+    const id = parseInt(req.params.id);
+    const participanteDeletado = await ParticipanteService.deletar(id)
+    res.status(204).end(); 
+  } catch (erro) {
+    next(erro);
   }
-  await participante.destroy();
-
-  return true;
-
 }
-
 
 module.exports = {
   index,
@@ -82,5 +64,4 @@ module.exports = {
   store,
   update,
   destroy
-
 };

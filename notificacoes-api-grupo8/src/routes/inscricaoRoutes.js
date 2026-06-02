@@ -35,52 +35,22 @@ const InscricaoController = require("../controllers/InscricaoController");
  *         participante_id: 1
  *         dataInscricao: "2026-02-25"
  *         status: "confirmada"
+ *     Erro:
+ *       type: object
+ *       properties:
+ *         erro:
+ *           type: object
+ *           properties:
+ *             tipo:
+ *               type: string
+ *               example: NotFoundError
+ *             mensagem:
+ *               type: string
+ *               example: Inscrição não encontrada
+ *             statusCode:
+ *               type: integer
+ *               example: 404
  */
-
-/**
- * @swagger
- * /inscricoes:
- *   get:
- *     summary: Listar todas as inscrições
- *     tags: [Inscricoes]
- *     responses:
- *       200:
- *         description: Lista de inscrições
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Inscricao'
- */
-router.get("/", InscricaoController.index);
-
-/**
- * @swagger
- * /inscricoes/evento/{eventoId}:
- *   get:
- *     summary: Listar inscrições de um evento
- *     tags: [Inscricoes]
- *     parameters:
- *       - in: path
- *         name: evento_id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID do evento
- *     responses:
- *       200:
- *         description: Lista de inscrições do evento
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Inscricao'
- *       404:
- *         description: Inscrições nao encontradas
- */
-router.get("/evento/:eventoId", InscricaoController.listarPorEvento);
 
 /**
  * @swagger
@@ -113,11 +83,76 @@ router.get("/evento/:eventoId", InscricaoController.listarPorEvento);
  *               status: "confirmada"
  *     responses:
  *       201:
- *         description: Inscrição criada com sucesso
+ *         description: Inscrição criada com sucesso 
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Inscrição'
  *       400:
- *         description: Dados invalidos
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 router.post("/", InscricaoController.store);
+
+/**
+ * @swagger
+ * /inscricoes:
+ *   get:
+ *     summary: Listar todas as inscrições
+ *     tags: [Inscricoes]
+ *     responses:
+ *       200:
+ *         description: Lista de inscrições
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Inscricao'
+ *       404:
+ *         description: Nenhum evento encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
+ */
+router.get("/", InscricaoController.index);
+
+/**
+ * @swagger
+ * /inscricoes/evento/{eventoId}:
+ *   get:
+ *     summary: Listar inscrições de um evento
+ *     tags: [Inscricoes]
+ *     parameters:
+ *       - in: path
+ *         name: evento_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do evento
+ *     responses:
+ *       200:
+ *         description: Lista de inscrições do evento
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Inscricao'
+ *       404:
+ *         description: Nenhuma inscrição encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Erro'
+ */
+router.get("/evento/:eventoId", InscricaoController.listarPorEvento);
+
+
 
 /**
  * @swagger
@@ -134,8 +169,16 @@ router.post("/", InscricaoController.store);
  *     responses:
  *       200:
  *         description: Inscrição cancelada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Inscricao'
  *       404:
- *         description: Nao foi possivel cancelar a inscrição
+ *         description: Inscrição não encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 router.patch("/:id/cancelar", InscricaoController.cancelar);
 
@@ -160,7 +203,11 @@ router.patch("/:id/cancelar", InscricaoController.cancelar);
  *             schema:
  *               $ref: '#/components/schemas/Inscricao'
  *       404:
- *         description: Inscrição nao encontrada
+ *         description: Inscrição não encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Erro'
  */
 router.get("/:id/detalhes", InscricaoController.detalhes);
 

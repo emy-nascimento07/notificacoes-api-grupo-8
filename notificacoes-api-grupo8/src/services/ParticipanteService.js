@@ -1,26 +1,26 @@
 // Módulos internos do projeto
 const ParticipanteModel = require('../models/ParticipanteModel');
-const {NotFoundError, ValidationError} = require('../errors/AppError');
+const { NotFoundError, ValidationError } = require('../errors/AppError');
 const {
-    isRequired,
-    isEmail,
-    minLegth,
-    validar,
+  isRequired,
+  isEmail,
+  minLegth,
+  validar,
 } = require('../helpers/validators');
 const Participante = require('../models/ParticipanteModel');
 const appEmitter = require('../events/eventEmitter');
 
 
-async function listarTodos(){
-    
-    const participante = await Participante.findAll({
-     order: [['nome', 'ASC']]
-    });
-    return participante;
+async function listarTodos() {
+
+  const participante = await Participante.findAll({
+    order: [['nome', 'ASC']]
+  });
+  return participante;
 }
 
-async function buscarPorId(id){
-    const participante = await Participante.findByPk(id);
+async function buscarPorId(id) {
+  const participante = await Participante.findByPk(id);
 
   if (!participante) {
     throw new NotFoundError('Participante');
@@ -34,7 +34,7 @@ async function criar(dados) {
     const novoParticipante = await Participante.create(dados);
     appEmitter.emit('participante:criado', novoParticipante);
     return novoParticipante;
-    
+
   } catch (erro) {
     // O Sequelize lança SequelizeValidationError para validações do Model
     if (erro.name === 'SequelizeValidationError') {
@@ -45,31 +45,37 @@ async function criar(dados) {
   }
 }
 
-// // Atualizar e Deletar vamos implementar na próxima aula
-// async function atualizar(id, dados) {
-//   try{
-//     const participante = await buscarPorId(id);
+async function atualizar(id, dados) {
+  try {
+    const participante = await buscarPorId(id);
 
-//     await participante.update(dados);
-//     return participante;
-//   } catch (erro) {
-//     if (erro.nam)
-//   }
-// }
+    await participante.update(dados);
+    return participante;
+  } catch (erro) {
+    if (erro.name === 'SequelizeValidationError') {
+      const mensagens = erro.errors.map(e => e.message).join('; ');
+      throw new ValidationError(mensagens);
+    }
+  }
+}
 
-// async function deletar(id) {
-//   try{
-//     const participante = await Participante.findByPk(id);P
-//     if (!participante) {
-//       throw new NotFoundError('Participante');
-//     }
-//   }
-// }
+async function deletar(id) {
+  try {
+    const participante = await Participante.findByPk(id);
+    if (!participante) {
+      throw new NotFoundError('Participante')
+    };
+  } catch (erro) {
+    if (erro.name === 'SequelizeValidationError') {
+      const mensagens = erro.errors.map(e => e.message).join('; ');
+      throw new ValidationError(mensagens);
+    }
+  }}
 
-module.exports = { 
-    listarTodos, 
-    buscarPorId, 
+  module.exports = {
+    listarTodos,
+    buscarPorId,
     criar,
-    // atualizar,
-    // deletar
-};
+    atualizar,
+    deletar
+  };
