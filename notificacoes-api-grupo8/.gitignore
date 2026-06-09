@@ -5,3 +5,4 @@ src/config/database.json
 src/config/config.json
 
 uploads/
+logs/
