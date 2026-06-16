@@ -162,17 +162,12 @@ Visualize os e-mails em `http://MAILPIT_IP:8025`.
 
 |---------|-----------|
 
-| `npm start` | Inicia o servidor (produção) |
-
-| `npm run dev` | Inicia com Nodemon (desenvolvimento) |
-
-| `npm run db:migrate` | Executa migrations pendentes |
-
-| `npm run db:migrate:undo` | Desfaz última migration |
-
-| `npm run db:seed` | Insere dados iniciais |
-
-| `npm run db:reset` | Recria banco completo |
+| `npm start` | Inicia o servidor (produção) |<br>
+| `npm run dev` | Inicia com Nodemon (desenvolvimento) |<br>
+| `npm run db:migrate` | Executa migrations pendentes |<br>
+| `npm run db:migrate:undo` | Desfaz última migration |<br>
+| `npm run db:seed` | Insere dados iniciais |<br>
+| `npm run db:reset` | Recria banco completo |<br>
 
 
 ## 🗄️ Banco de Dados
