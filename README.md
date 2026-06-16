@@ -1,6 +1,6 @@
 # 🔔 Notificações API
 
-> API REST para o módulo de notificações por e-mail de uma plataforma de gerenciamento de eventos.
+API REST para módulo de notificações por e-mail de uma plataforma de eventos.
 
 ![Node.js](https://img.shields.io/badge/Node.js-24+-green)
 ![Express](https://img.shields.io/badge/Express-4.x-blue)
@@ -10,7 +10,7 @@
 **🌐 URL de Produção:** 10.137.146.208
 **📚 Documentação:** http://localhost:3000/api-docs
 
---- 
+---
 
 ## 📋 Sobre o Projeto
 
@@ -27,7 +27,6 @@ UCs: Programação Back-End + Projetos de Software
 - Emilly Raissa Nascimento — [GitHub] https://github.com/emy-nascimento07
 - Lívia Oliveira Martins Matos — [GitHub] https://github.com/livia-matos315
 - Vinícius de Oliveira Silva — [GitHub] https://github.com/viniciusbr-star
-
 
 ---
 
@@ -79,7 +78,8 @@ UCs: Programação Back-End + Projetos de Software
 
 ---
 
-## 🛣️ Rotas Disponíveis
+
+## 📚 Rotas da API
 
 ### 📅 Eventos
 
@@ -130,54 +130,22 @@ UCs: Programação Back-End + Projetos de Software
 | POST |` /notificacoes/:id/reenviar` | Reenviar notificação |
 | POST | `/notificacoes/teste-email` | Enviar e-mail de teste |
 
-## 📧 Sistema de Notificações
-
-A API envia e-mails automaticamente usando o **Padrão Observer**:
-
-- **Confirmação de inscrição** — enviado ao criar uma inscrição
-
-- **Cancelamento** — enviado ao cancelar uma inscrição
-
-Em desenvolvimento, os e-mails são capturados pelo **MailPit** (servidor SMTP local).
-
-Visualize os e-mails em `http://MAILPIT_IP:8025`.
-
 ---
 
-## ️ Tecnologias
-- Node.js
-- Express.js
-- MySQL
-- Sequelize
-- Swagger (swagger-jsdoc + swagger-ui-express)
-- Dotenv (variáveis de ambiente)
-- Nodemon (desenvolvimento)
-- CORS
+## 🛠️ Tecnologias
+
+| Tecnologia           | Finalidade                     |
+| -------------------- | ------------------------------ |
+| Node.js              | Runtime                        |
+| Express.js           | Framework web                  |
+| MySQL                | Banco de dados                 |
+| Sequelize            | ORM                            |
+| Nodemailer + MailPit | Envio de e-mails (teste local) |
+| Swagger              | Documentação                   |
+| Dotenv               | Variáveis de Ambiente          |
+| CORS                 | Permissão para consumir a API  |
 
 ---
-
-## 🔧 Scripts
-
-| Comando | Descrição |
-
-|---------|-----------|
-
-| `npm start` | Inicia o servidor (produção) |<br>
-| `npm run dev` | Inicia com Nodemon (desenvolvimento) |<br>
-| `npm run db:migrate` | Executa migrations pendentes |<br>
-| `npm run db:migrate:undo` | Desfaz última migration |<br>
-| `npm run db:seed` | Insere dados iniciais |<br>
-| `npm run db:reset` | Recria banco completo |<br>
-
-
-## 🗄️ Banco de Dados
-
-- **SGBD:** MySQL
-
-- **ORM:** Sequelize
-
-- **Tabelas:** eventos, participantes, inscricoes, notificacoes, sequelizemeta
-
 
 ## 📁 Estrutura do Projeto
 
@@ -270,3 +238,34 @@ notificacoes-api/ <br>
 ├── package-lock.json <br>
 ├── package.json <br>
 └── README.md
+
+
+---
+
+## 🔧 Scripts Disponíveis
+
+| Comando                   | Descrição                             |
+| ------------------------- | ------------------------------------- |
+| `npm start`               | Inicia o servidor (produção)          |
+| `npm run dev`             | Inicia com Nodemon (desenvolvimento)  |
+| `npm run db:migrate`      | Executa migrations pendentes          |
+| `npm run db:migrate:undo` | Desfaz última migration               |
+| `npm run db:seed`         | Insere dados iniciais                 |
+| `npm run db:reset`        | Recria banco completo                 |
+
+---
+
+## 📧 Sistema de Notificações
+
+A API usa o **Padrão Observer** para disparar notificações automaticamente:
+
+- ✅ Confirmação de inscrição
+- ✅ Cancelamento de inscrição
+
+Em desenvolvimento, e-mails são capturados pelo MailPit (servidor SMTP local na rede da sala).
+
+---
+
+## 📄 Licença
+
+Projeto acadêmico — SENAI 2026
