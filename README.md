@@ -46,7 +46,6 @@ UCs: Programação Back-End + Projetos de Software
    git clone https://github.com/emy-nascimento07/notificacoes-api-grupo-8.git
    cd notificacoes-api-grupo8
    ```
-````
 
 2. Instale as dependências:
 
