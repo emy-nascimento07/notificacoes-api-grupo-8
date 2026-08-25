@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ParticipanteController = require("../controllers/ParticipanteController");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 /**
  * @swagger
@@ -201,6 +202,6 @@ router.put("/:id", ParticipanteController.update);
  *             schema:
  *               $ref: '#/components/schemas/Erro'
  */
-router.delete("/:id", ParticipanteController.destroy);
+router.delete("/:id", authMiddleware, ParticipanteController.destroy);
 
 module.exports = router;

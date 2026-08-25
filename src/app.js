@@ -20,7 +20,9 @@ const participanteRoutes = require("./routes/participanteRoutes");
 const inscricaoRoutes = require("./routes/inscricaoRoutes");
 const exportRoutes = require('./routes/exportRoutes');
 const notificacaoRoutes = require('./routes/notificacaoRoutes');
+const authRoutes = require("./routes/authRoutes");
 
+app.use("/auth", authRoutes);
 app.use("/eventos", eventoRoutes);
 app.use("/participantes", participanteRoutes);
 app.use("/inscricoes", inscricaoRoutes);
